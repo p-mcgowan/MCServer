@@ -174,6 +174,8 @@ int main(int argc, char** argv)
 	
 	Chunk.data = NULL;
 	
+	
+	Simulator.SimulateChunk(1000.0f/20.0f, 0, 0, &Chunk);
 	Simulator.WakeUp(0, 0, 0, &Chunk);
 	Simulator.SimulateChunk(1000.0f/20.0f, 0, 0, &Chunk);
 	
