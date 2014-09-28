@@ -558,24 +558,31 @@ void cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, 
 template <class ChunkType, class WorldType, template <BLOCKTYPE block> class GetHandlerCompileTime, class ChestType>
 void cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, ChestType>::SimulateChunk(float a_Dt, int a_ChunkX, int a_ChunkZ, ChunkType * a_Chunk)
 {
+
+	// Fetch simulator data
 	m_RedstoneSimulatorChunkData = (cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, ChestType>::cIncrementalRedstoneSimulatorChunkData *)a_Chunk->GetRedstoneSimulatorData();
 	if (m_RedstoneSimulatorChunkData == NULL)
 	{
 		m_RedstoneSimulatorChunkData = new cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, ChestType>::cIncrementalRedstoneSimulatorChunkData();
 		a_Chunk->SetRedstoneSimulatorData(m_RedstoneSimulatorChunkData);
 	}
+	
+	// If no simulated blocks return
 	if (m_RedstoneSimulatorChunkData->m_ChunkData.empty() && ((cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, ChestType>::cIncrementalRedstoneSimulatorChunkData *)a_Chunk->GetRedstoneSimulatorData())->m_QueuedChunkData.empty())
 	{
 		return;
 	}
 
+	// Add queued blocks to simulator
 	m_RedstoneSimulatorChunkData->m_ChunkData.insert(
 		m_RedstoneSimulatorChunkData->m_ChunkData.end(), 
 		m_RedstoneSimulatorChunkData ->m_QueuedChunkData.begin(), 
 		m_RedstoneSimulatorChunkData ->m_QueuedChunkData.end());
 		
+	// clear queue
 	m_RedstoneSimulatorChunkData->m_QueuedChunkData.clear();
 
+	// Seperate data
 	m_PoweredBlocks = &m_RedstoneSimulatorChunkData->m_PoweredBlocks;
 	m_RepeatersDelayList = &m_RedstoneSimulatorChunkData->m_RepeatersDelayList;
 	m_SimulatedPlayerToggleableBlocks = &m_RedstoneSimulatorChunkData->m_SimulatedPlayerToggleableBlocks;
@@ -583,6 +590,7 @@ void cIncrementalRedstoneSimulator<ChunkType, WorldType, GetHandlerCompileTime, 
 	m_Chunk = a_Chunk;
 	bool ShouldUpdateSimulateOnceBlocks = false;
 
+	// Is this a full or incremental tick
 	if (a_Chunk->IsRedstoneDirty())
 	{
 		// Simulate the majority of devices only if something (blockwise or power-wise) has changed
