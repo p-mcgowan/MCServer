@@ -98,15 +98,22 @@ public:
 class MockChunk 
 {
 public:
-	cRedstoneSimulatorChunkData * GetRedstoneSimulatorData() { return NULL; }
-	void SetRedstoneSimulatorData(cRedstoneSimulatorChunkData * a_Data) {}
+	
+	cRedstoneSimulatorChunkData * data;
+
+	cRedstoneSimulatorChunkData * GetRedstoneSimulatorData() { return data; }
+	void SetRedstoneSimulatorData(cRedstoneSimulatorChunkData * a_Data) 
+	{
+		testassert(a_Data != NULL);
+		data = a_Data;
+	}
 	bool IsRedstoneDirty() { return true; }
 	void SetIsRedstoneDirty(bool a_Param) {}
 	
 	void GetBlockTypeMeta(int a_RelX, int a_RelY, int a_RelZ, BLOCKTYPE & a_BlockType, NIBBLETYPE & a_BlockMeta) 
 	{
-		test_assert(a_RelX == 0 && a_RelY == 0 && a_RelZ == 0);
-		a_BlockType = E_BLOCK_REPEATER_OFF;
+		testassert(a_RelX == 0 && a_RelY == 0 && a_RelZ == 0);
+		a_BlockType = E_BLOCK_REDSTONE_REPEATER_OFF;
 		a_BlockMeta = 0;
 	}
 
@@ -159,17 +166,16 @@ public:
 
 int main(int argc, char** argv)
 {
-	
-	
 
 	MockWorld World;
 	MockChunk Chunk;
 
 	cIncrementalRedstoneSimulator<MockChunk, MockWorld, MockHandlerFetcher, MockChest> Simulator(World);
 	
+	Chunk.data = NULL;
 	
 	Simulator.WakeUp(0, 0, 0, &Chunk);
-	Simulator.SimulateChunk(Chunk);
+	Simulator.SimulateChunk(1000.0f/20.0f, 0, 0, &Chunk);
 	
 	return 0;
 }

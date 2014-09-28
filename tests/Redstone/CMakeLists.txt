@@ -9,5 +9,5 @@ add_definitions(-DTEST_GLOBALS=1)
 add_executable(Redstone-creatable-exe creatable.cpp ../../src/BoundingBox.cpp)
 add_test(NAME creatable-test COMMAND Redstone-creatable-exe)
 
-add_executable(Redstone-repeaters-exe creatable.cpp ../../src/BoundingBox.cpp)
+add_executable(Redstone-repeaters-exe Repeaters.cpp ../../src/BoundingBox.cpp ${CMAKE_SOURCE_DIR}/src/StringUtils.cpp)
 add_test(NAME repeater-test COMMAND Redstone-repeaters-exe)
