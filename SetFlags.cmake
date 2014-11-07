@@ -93,14 +93,7 @@ macro(set_flags)
 		if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 			execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
                 		OUTPUT_VARIABLE GCC_VERSION)
-                endif()
-                
-                if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND (NOT GCC_VERSION VERSION_GREATER 4.6))
-	                set(CMAKE_CXX_FLAGS          "${CMAKE_CXX_FLAGS}          -std=c++0x")
-			set(CMAKE_CXX_FLAGS_DEBUG    "${CMAKE_CXX_FLAGS_DEBUG}    -std=c++0x")
-			set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -std=c++0x")
-			set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE}  -std=c++0x")
-		else()
+
 			set(CMAKE_CXX_FLAGS          "${CMAKE_CXX_FLAGS}          -std=c++11")
 			set(CMAKE_CXX_FLAGS_DEBUG    "${CMAKE_CXX_FLAGS_DEBUG}    -std=c++11")
 			set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -std=c++11")
